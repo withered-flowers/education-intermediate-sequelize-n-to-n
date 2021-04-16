@@ -1,0 +1,27 @@
+[
+  {
+    "UserId": 7,
+    "ProductId": 1,
+    "qty": 8
+  },
+  {
+    "UserId": 7,
+    "ProductId": 7,
+    "qty": 9
+  },
+  {
+    "UserId": 4,
+    "ProductId": 3,
+    "qty": 3
+  },
+  {
+    "UserId": 8,
+    "ProductId": 3,
+    "qty": 18
+  },
+  {
+    "UserId": 10,
+    "ProductId": 5,
+    "qty": 15
+  }
+]
