@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <table>
+    <table border='1'>
       <thead>
         <tr>
           <th>Username</th>
@@ -18,11 +18,16 @@
         </tr>
       </thead>
       <tbody>
-        <% dataCombined.forEach(datum => { %>
+        <% dataCombined.forEach(user => { %>
+          <% user.Products.forEach(product => { %> 
           <tr>
-            <td><%= datum.userName %></td>
-            <td><%= datum.Products %></td>
+            <td><%= user.userName %></td>
+            <td><%= product.name %></td>
+            <td><%= product.price %></td>
+            <td><%= product.Transaction.qty %></td>
+            <td><%= product.price * product.Transaction.qty %></td>
           </tr>
+          <% }) %>
         <% }) %>
       </tbody>
     </table>

@@ -308,14 +308,14 @@ model `Transaction`.
      User.belongsToMany(models.Product, { through: models.Transaction });
    }
    ```
-2. Memodifikasi file `model/product.js` dan menambahkan association terhadap
+1. Memodifikasi file `model/product.js` dan menambahkan association terhadap
    model `User`
    ```javascript
    static associate(models) {
      Product.belongsToMany(models.User, { through: models.Transaction });
    }
    ``` 
-3. Setelah mendefinisikan association pada kedua file tersebut, maka langkah
+1. Setelah mendefinisikan association pada kedua file tersebut, maka langkah
    selanjutnya adalah memodifikasi file `controllers/controller.js` untuk 
    melakukan query ormnya. hasil modifikasinya adalah sebagai berikut:
    ```javascript
@@ -324,8 +324,95 @@ model `Transaction`.
 
    ...
    static getRootHandler(req, res) {
-     
+     User
+       .findAll({ include: [ Product ]})
+       .then(dataCombined => {
+         console.log(dataCombined);
+         res.send("Berhasil");
+       })
+       .catch(err => {
+         res.send(err);
+       })
    }
    ```
-   Mari kita coba analisis isi dari datanya terlebih dahulu pada console kita
-   sebelum membuat tampilan nya yah !
+1. Mari kita coba analisis isi dari datanya terlebih dahulu pada console kita
+   sebelum membuat tampilan nya yah ! Ternyata data yang ada cukup sulit untuk
+   dilihat bukan? Untuk mempermudah data yang terlihat kita bisa menggunakan
+   `JSON.stringify` untuk mempermudah bacaannya yah, sehingga pada langkah ini
+   akan memodifikasi kode menjadi sebagai berikut:
+   ```javascript
+   static getRootHandler(req, res) {
+     User
+       .findAll({ include: [ Product ]})
+       .then(dataCombined => {
+         console.log(JSON.stringify(dataCombined, null, 2));
+         res.send("Berhasil");
+       })
+       .catch(err => {
+         res.send(err);
+       });
+   }
+   ```
+1. Setelah melihat data yang sudah dibentuk tersebut, barulah kita membuat 
+   tampilan untuk menampilkan data yang ada sesuai dengan requirement.
+   Langkah ini akan membuat sebuah file `views/list.ejs` dan memodifikasinya
+   untuk menampilkan data yang diinginkan. Asumsi pada langkah ini adalah
+   data yang dilempar dari controller menuju `views/list.ejs` adalah
+   bernama `dataCombined`
+
+   ```html
+    <table border='1'>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% dataCombined.forEach(user => { %>
+          <% user.Products.forEach(product => { %> 
+          <tr>
+            <td><%= user.userName %></td>
+            <td><%= product.name %></td>
+            <td><%= product.price %></td>
+            <td><%= product.Transaction.qty %></td>
+            <td><%= product.price * product.Transaction.qty %></td>
+          </tr>
+          <% }) %>
+        <% }) %>
+      </tbody>
+    </table>
+   ```
+1. Setelah membuat struktur tampilan ejsnya, langkah selanjutnya adalah
+   menyatukan tampilan ejs dengan controllernya, dengan memodifikasi file 
+   `controllers/controller.js`
+   ```javascript
+   static getRootHandler(req, res) {
+     User
+       // eager loading
+       .findAll({ include: [ Product ] })
+       .then(dataCombined => {
+         // console.log(JSON.stringify(dataCombined, null, 2));
+         res.render('list', { dataCombined })
+       })
+       .catch(err => {
+         res.send(err);
+       });
+    }
+   ```
+1. Jalankan node dan lihatlah hasilnya !
+
+Sampai di sini artinya kita sudah berhasil mengimplementasikan association
+`many-to-many` dengan menggunakan sequelize ORM !
+
+Kemudian langkah selanjutnya apa? Mari kita coba lihat data pada ejs kita,
+kesannya sulit sekali bukan ketikan menggunakan query `many-to-many` ini?
+
+Ada tidak yah cara yang lebih mudah lagi?
+
+Nah untuk itu, cobalah untuk membaca tentang `Advanced M:N Association` pada
+dokumentasi Sequelize, khususnya pada bagian `Super Many-to-Many Association`
+yah !

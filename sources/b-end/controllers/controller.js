@@ -7,8 +7,8 @@ class Controller {
       // eager loading
       .findAll({ include: [ Product ] })
       .then(dataCombined => {
-        console.log(dataCombined);
-        res.send("Berhasil");
+        // console.log(JSON.stringify(dataCombined, null, 2));
+        res.render('list', { dataCombined })
       })
       .catch(err => {
         res.send(err);
