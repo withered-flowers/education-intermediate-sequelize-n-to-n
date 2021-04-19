@@ -12,5 +12,5 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/', Controller.getRootHandler);
 
 app.listen(PORT, () => {
-  console.log(`Apps working at ${port}`);
+  console.log(`Apps working at ${PORT}`);
 });

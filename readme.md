@@ -257,8 +257,63 @@ masuk ke tahap aplikasi.
 Pada pembelajaran kali ini kita tidak: 
 - menggunakan `express.Router` untuk  memodularisasi endpoint yang ada
 - memodularisasi controller karena endpoint hanya sedikit
-1. Membuat file `controller/controller.js` untuk menjadi otak / handler dari
+1. Membuat file `controllers/controller.js` untuk menjadi otak / handler dari
    segala endpoint yang didefinisikan.
-2. Memodifikasi file `app.js` dan `controller/controller.js` menjadi seperti
+2. Memodifikasi file `app.js` dan `controllers/controller.js` menjadi seperti
    berikut:
-   
+   ```javascript
+   // File: controllers/controller.js
+   class Controller {
+     static getRootHandler(req, res) {
+       // TODO: implement this later
+     }
+   }
+
+   module.exports = Controller;
+   ```
+   ```javascript
+   // File: app.js
+   const express = require('express');
+   const app = express();
+
+   const PORT = process.env.PORT || 10000;
+
+   const Controller = require('./controllers/controller.js');
+
+   app.set('view engine', 'ejs');
+   app.use(express.urlencoded({ extended: false }));
+
+   // GET /
+   app.get('/', Controller.getRootHandler);
+
+   app.listen(PORT, () => {
+     console.log(`Apps working at ${PORT}`);
+   });
+   ```
+Sampai di tahap ini artinya kita sudah membuat kerangka yang diperlukan
+untuk membuat server yang akan menyediakan / mengquery data. Selanjutnya adalah
+menyambungkannya dengan database melalui sequelize
+
+### Langkah 6 - Mendefinisikan association dan membuat query orm
+Sebelum bisa melakukan query orm, kita harus menganalisa terlebih dahulu, 
+hubungan atau association antar model ini seperti apa, dan dari 
+struktur model yang ada, terlihat bahwa sebenarnya ini adalah asoasiasi
+`many-to-many` antara model `User` dan model `Product` yang memiliki pivot
+model `Transaction`.
+
+1. Memodifikasi file `model/user.js` dan menambahkan association terhadap model
+   `Product`
+   ```javascript
+   static associate(models) {
+     User.belongsToMany(models.Product, { through: models.Transaction });
+   }
+   ```
+2. Memodifikasi file `model/product.js` dan menambahkan association terhadap
+   model `User`
+   ```javascript
+   static associate(models) {
+     Product.belongsToMany(models.User, { through: models.Transaction });
+   }
+   ``` 
+3. Setelah mendefinisikan association pada kedua file tersebut, maka langkah
+   selanjutnya adalah memodifikasi 
