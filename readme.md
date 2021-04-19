@@ -5,6 +5,9 @@
     - Langkah 1 - Inisialisasi Project
     - Langkah 2 - Inisialisasi Sequelize
     - Langkah 3 - Pembuatan Tabel
+    - Langkah 4 - Mempopulasikan data awal dengan seeder
+    - Langkah 5 - Membuat app.js dan mendefinisikan endpoint
+    - Langkah 6 - Mendefinisikan association dan membuat query orm
 
 Diceritakan pada suatu ketika ada sebuah perusahaan bernama `ecommurz` yang akan
 melaunching aplikasi E-Commerce. Anda sebagai seorang developer di perusahaan
