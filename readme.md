@@ -264,6 +264,8 @@ Pada pembelajaran kali ini kita tidak:
    segala endpoint yang didefinisikan.
 2. Memodifikasi file `app.js` dan `controllers/controller.js` menjadi seperti
    berikut:
+   
+   File: controller.js
    ```javascript
    // File: controllers/controller.js
    class Controller {
@@ -274,6 +276,8 @@ Pada pembelajaran kali ini kita tidak:
 
    module.exports = Controller;
    ```
+   
+   File: app.js
    ```javascript
    // File: app.js
    const express = require('express');
