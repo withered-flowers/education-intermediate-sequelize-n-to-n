@@ -316,4 +316,16 @@ model `Transaction`.
    }
    ``` 
 3. Setelah mendefinisikan association pada kedua file tersebut, maka langkah
-   selanjutnya adalah memodifikasi 
+   selanjutnya adalah memodifikasi file `controllers/controller.js` untuk 
+   melakukan query ormnya. hasil modifikasinya adalah sebagai berikut:
+   ```javascript
+   // import model
+   const { User, Product, Transaction } = require('../models/index.js');
+
+   ...
+   static getRootHandler(req, res) {
+     
+   }
+   ```
+   Mari kita coba analisis isi dari datanya terlebih dahulu pada console kita
+   sebelum membuat tampilan nya yah !
